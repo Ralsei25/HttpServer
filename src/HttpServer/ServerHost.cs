@@ -5,10 +5,10 @@ namespace HttpServer
 {
     public class ServerHost
     {
-        private string _answer;
-        public ServerHost(string answer)
+        private readonly IStreamHandler _handler;
+        public ServerHost(IStreamHandler handler)
         {
-            _answer = answer;
+            _handler = handler;
         }
 
         public void Start()
@@ -21,16 +21,7 @@ namespace HttpServer
                 var client = listener.AcceptTcpClient();
                 using (var stream = client.GetStream())
                 {
-                    using (var reader = new StreamReader(stream))
-                    using (var writer = new StreamWriter(stream))
-                    {
-                        for (string? line = null; line != string.Empty; line = reader.ReadLine())
-                        {
-                            Console.WriteLine(line);
-                        }
-
-                        writer.Write(_answer);
-                    }
+                    _handler.Handle(stream);
                 }
             }
         }
