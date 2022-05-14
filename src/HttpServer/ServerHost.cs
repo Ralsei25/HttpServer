@@ -15,48 +15,64 @@ namespace HttpServer
 
         public void Start()
         {
+            Console.WriteLine("Server started in sync mode");
             TcpListener listener = new TcpListener(IPAddress.Any, 80);
             listener.Start();
 
             while (true)
             {
-                using (var client = listener.AcceptTcpClient())
-                using (var stream = client.GetStream())
-                using (var reader = new StreamReader(stream))
+                try
                 {
-                    string firstLine = reader.ReadLine();
-                    for (string? line = null; line != string.Empty; line = reader.ReadLine())
-                        ;
+                    using (var client = listener.AcceptTcpClient())
+                    using (var stream = client.GetStream())
+                    using (var reader = new StreamReader(stream))
+                    {
+                        string firstLine = reader.ReadLine();
+                        for (string? line = null; line != string.Empty; line = reader.ReadLine())
+                            ;
 
-                    var request = RequestParser.Parse(firstLine);
-                    _handler.Handle(stream, request);
+                        var request = RequestParser.Parse(firstLine);
+                        _handler.Handle(stream, request);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
                 }
             }
         }
         public async Task StartAsync()
         {
+            Console.WriteLine("Server started in async mode");
             TcpListener listener = new TcpListener(IPAddress.Any, 80);
             listener.Start();
 
             while (true)
             {
                 var client = await listener.AcceptTcpClientAsync();
-                await ProcessClientAsync(client);
+                _ = ProcessClientAsync(client);
             }
         }
 
         private async Task ProcessClientAsync(TcpClient client)
         {
-            using (client)
-            using (var stream = client.GetStream())
-            using (var reader = new StreamReader(stream))
+            try
             {
-                string firstLine = await reader.ReadLineAsync();
-                for (string? line = null; line != string.Empty; line = await reader.ReadLineAsync())
-                    ;
+                using (client)
+                using (var stream = client.GetStream())
+                using (var reader = new StreamReader(stream))
+                {
+                    string firstLine = await reader.ReadLineAsync();
+                    for (string? line = null; line != string.Empty; line = await reader.ReadLineAsync())
+                        ;
 
-                var request = RequestParser.Parse(firstLine);
-                await _handler.HandleAsync(stream, request);
+                    var request = RequestParser.Parse(firstLine);
+                    await _handler.HandleAsync(stream, request);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
     }

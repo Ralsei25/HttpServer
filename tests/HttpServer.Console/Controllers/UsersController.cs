@@ -9,8 +9,9 @@ namespace HttpServer.Console.Controllers
     public record User(string Name, string Login);
     public class UsersController : IController
     {
-        public User[] Index()
+        public async Task<User[]> Index()
         {
+            await Task.Delay(50);
             return new User[]
             {
                 new User("Stepfan", "Gttb"),
