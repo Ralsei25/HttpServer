@@ -1,4 +1,4 @@
 ﻿using HttpServer;
 
-ServerHost host = new ServerHost(new StringHandler("Hello! I'm test server"));
+ServerHost host = new ServerHost(new StaticFileHandler(Path.Combine(Environment.CurrentDirectory, "www")));
 host.Start();

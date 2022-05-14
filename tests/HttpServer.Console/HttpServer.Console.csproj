@@ -11,4 +11,16 @@
     <ProjectReference Include="..\..\src\HttpServer\HttpServer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="www\image.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="www\image.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="www\Index.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
