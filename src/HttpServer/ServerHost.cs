@@ -56,7 +56,7 @@ namespace HttpServer
                     ;
 
                 var request = RequestParser.Parse(firstLine);
-                _handler.Handle(stream, request);
+                await _handler.HandleAsync(stream, request);
             }
         }
     }
