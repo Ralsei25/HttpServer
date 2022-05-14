@@ -20,7 +20,7 @@ namespace HttpServer
 
             while (true)
             {
-                var client = listener.AcceptTcpClient();
+                using (var client = listener.AcceptTcpClient())
                 using (var stream = client.GetStream())
                 using (var reader = new StreamReader(stream))
                 {
@@ -31,6 +31,32 @@ namespace HttpServer
                     var request = RequestParser.Parse(firstLine);
                     _handler.Handle(stream, request);
                 }
+            }
+        }
+        public async Task StartAsync()
+        {
+            TcpListener listener = new TcpListener(IPAddress.Any, 80);
+            listener.Start();
+
+            while (true)
+            {
+                var client = await listener.AcceptTcpClientAsync();
+                await ProcessClientAsync(client);
+            }
+        }
+
+        private async Task ProcessClientAsync(TcpClient client)
+        {
+            using (client)
+            using (var stream = client.GetStream())
+            using (var reader = new StreamReader(stream))
+            {
+                string firstLine = await reader.ReadLineAsync();
+                for (string? line = null; line != string.Empty; line = await reader.ReadLineAsync())
+                    ;
+
+                var request = RequestParser.Parse(firstLine);
+                _handler.Handle(stream, request);
             }
         }
     }

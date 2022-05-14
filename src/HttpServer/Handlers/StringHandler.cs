@@ -14,5 +14,13 @@
                 writer.Write(_answer);
             }
         }
+
+        public async Task HandleAsync(Stream stream, Request request)
+        {
+            using (var writer = new StreamWriter(stream))
+            {
+                await writer.WriteAsync(_answer);
+            }
+        }
     }
 }

@@ -30,5 +30,26 @@ namespace HttpServer.Handlers
                 }
             }
         }
+
+        public async Task HandleAsync(Stream networkStream, Request request)
+        {
+            using (var writer = new StreamWriter(networkStream))
+            {
+                var filePath = Path.Combine(_path, request.Path[1..]);
+
+                if (!File.Exists(filePath))
+                {
+                    await ResponseWriter.WriteStatusAsync(HttpStatusCode.NotFound, networkStream);
+                }
+                else
+                {
+                    await ResponseWriter.WriteStatusAsync(HttpStatusCode.OK, networkStream);
+                    using (var fileStream = File.OpenRead(filePath))
+                    {
+                        await fileStream.CopyToAsync(networkStream);
+                    }
+                }
+            }
+        }
     }
 }

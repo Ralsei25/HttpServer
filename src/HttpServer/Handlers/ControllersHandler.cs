@@ -57,6 +57,18 @@ namespace HttpServer.Handlers
                 WriteControllerResponse(func(), stream);
             }
         }
+        public async Task HandleAsync(Stream stream, Request request)
+        {
+            if (!_routes.TryGetValue(request.Path, out var func))
+            {
+                await ResponseWriter.WriteStatusAsync(HttpStatusCode.NotFound, stream);
+            }
+            else
+            {
+                await ResponseWriter.WriteStatusAsync(HttpStatusCode.OK, stream);
+                await WriteControllerResponseAsync(func(), stream);
+            }
+        }
 
         private void WriteControllerResponse(object response, Stream stream)
         {
@@ -74,5 +86,22 @@ namespace HttpServer.Handlers
                 WriteControllerResponse(JsonConvert.SerializeObject(response), stream);
             }
         }
+        private async Task WriteControllerResponseAsync(object response, Stream stream)
+        {
+            if (response is string str)
+            {
+                using var writer = new StreamWriter(stream, leaveOpen: true);
+                await writer.WriteAsync(str);
+            }
+            else if (response is byte[] buffer)
+            {
+                await stream.WriteAsync(buffer, 0, buffer.Length);
+            }
+            else
+            {
+                await WriteControllerResponseAsync(JsonConvert.SerializeObject(response), stream);
+            }
+        }
+
     }
 }
