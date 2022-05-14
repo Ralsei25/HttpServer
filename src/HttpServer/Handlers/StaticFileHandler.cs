@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using HttpServer.Helpers;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HttpServer
+namespace HttpServer.Handlers
 {
     public class StaticFileHandler : IStreamHandler
     {

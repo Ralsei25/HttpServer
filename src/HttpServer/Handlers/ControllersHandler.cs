@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using HttpServer.Helpers;
+using Newtonsoft.Json;
 using System.Net;
 using System.Reflection;
 
-namespace HttpServer
+namespace HttpServer.Handlers
 {
     public class ControllersHandler : IStreamHandler
     {

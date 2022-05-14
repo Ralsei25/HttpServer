@@ -1,6 +1,5 @@
-﻿namespace HttpServer
+﻿namespace HttpServer.Helpers
 {
-    public record Request(string Path, HttpMethod Method);
     internal static class RequestParser
     {
         public static Request Parse(string header)

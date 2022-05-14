@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace HttpServer
+namespace HttpServer.Helpers
 {
     internal static class ResponseWriter
     {

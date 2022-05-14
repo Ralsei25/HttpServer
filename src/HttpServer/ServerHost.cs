@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using HttpServer.Handlers;
+using HttpServer.Helpers;
+using System.Net;
 using System.Net.Sockets;
 
 namespace HttpServer
@@ -32,4 +34,5 @@ namespace HttpServer
             }
         }
     }
+    public record Request(string Path, HttpMethod Method);
 }
