@@ -8,6 +8,6 @@ namespace HttpServer
 {
     public interface IStreamHandler
     {
-        void Handle(Stream stream);
+        void Handle(Stream stream, Request request);
     }
 }

@@ -14,16 +14,10 @@ namespace HttpServer
         {
             _path = path;
         }
-        public void Handle(Stream networkStream)
+        public void Handle(Stream networkStream, Request request)
         {
-            using (var reader = new StreamReader(networkStream))
             using (var writer = new StreamWriter(networkStream))
             {
-                string firstLine = reader.ReadLine();
-                for (string? line = null; line != string.Empty; line = reader.ReadLine())
-                    ;
-
-                var request = RequestParser.Parse(firstLine);
                 var filePath = Path.Combine(_path, request.Path[1..]);
 
                 if (!File.Exists(filePath))

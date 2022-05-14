@@ -13,14 +13,10 @@ namespace HttpServer
         {
             _answer = answer;
         }
-        public void Handle(Stream stream)
+        public void Handle(Stream stream, Request request)
         {
-            using (var reader = new StreamReader(stream))
             using (var writer = new StreamWriter(stream))
             {
-                for (string? line = null; line != string.Empty; line = reader.ReadLine()) 
-                    ;
-
                 writer.Write(_answer);
             }
         }
