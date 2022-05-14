@@ -37,7 +37,7 @@ namespace HttpServer.Handlers
             }
             if (method.Name.Equals("Index", StringComparison.InvariantCultureIgnoreCase))
             {
-                return name;
+                return $"/{name}";
             }
             else
             {
